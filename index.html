@@ -436,8 +436,7 @@ async function fetchStooq(yahoo){
       var r = await fetchWithTimeout(attempts[i]);
       if(!r.ok) continue;
       var txt = await r.text();
-      var lines = txt.trim().split('
-');
+      var lines = txt.trim().split('\n');
       if(lines.length<2) continue;
       var header=lines[0].split(',');
       var row=lines[1].split(',');
@@ -551,8 +550,7 @@ async function fetchFX(){
           var r3=await fetchWithTimeout(attempts[k]);
           if(!r3.ok) continue;
           var txt=await r3.text();
-          var lines=txt.trim().split('
-');
+          var lines=txt.trim().split('\n');
           if(lines.length<2) continue;
           var header=lines[0].split(',');
           var row=lines[1].split(',');
