@@ -31,8 +31,8 @@ table{width:100%;border-collapse:collapse;background:var(--panel);border:1px sol
 th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:right;font-size:12.5px;white-space:nowrap}
 th:first-child,td:first-child{text-align:left}
 th{background:#10131a;cursor:pointer;user-select:none;font-weight:600;color:#e5e7eb}
-th.sort-asc::after{content:" ▲";color:var(--accent)}
-th.sort-desc::after{content:" ▼";color:var(--accent)}
+th.sort-asc::after{content:" \25B2";color:var(--accent)}
+th.sort-desc::after{content:" \25BC";color:var(--accent)}
 tr:hover td{background:#191d24}
 .pos{color:var(--green)} .neg{color:var(--red)} .muted{color:var(--muted)}
 .pill{display:inline-block;padding:1px 8px;border-radius:999px;font-size:11px;border:1px solid var(--line);background:#10131a;color:var(--muted)}
@@ -43,13 +43,10 @@ section{display:none;margin-top:14px}
 section.active{display:block}
 .legend{font-size:12px;color:var(--muted);margin-top:8px}
 .section-title{margin:18px 0 8px;font-size:14px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
-input[type=number]{width:100px;background:#0b0d10;color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:12px}
 .fx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px}
 .fx-tile{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
 .fx-tile .pair{font-size:12px;color:var(--muted)}
 .fx-tile .val{font-size:18px;font-weight:600;margin-top:2px}
-.bar{position:relative;background:#1a1f27;height:8px;border-radius:6px;overflow:hidden}
-.bar > span{position:absolute;left:0;top:0;bottom:0;background:var(--green)}
 .note{background:#0f1218;border:1px dashed var(--line);padding:10px 12px;border-radius:10px;color:var(--muted);font-size:12px;margin-top:8px}
 small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px}
 .right{margin-left:auto}
@@ -59,24 +56,24 @@ small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;
 <body>
 <header>
   <div>
-    <h1>📊 Investeringsdashboard</h1>
-    <div class="meta">Live-kurser via Yahoo Finance / Frankfurter (FX). Falder tilbage til seneste regnearksværdier ved fejl.</div>
+    <h1>Investeringsdashboard</h1>
+    <div class="meta">Live-kurser via Stooq / Yahoo Finance / Frankfurter (FX). Falder tilbage til seneste regnearksvaerdier ved fejl.</div>
   </div>
   <div class="flex">
-    <span id="updated" class="meta">Henter live-kurser…</span>
-    <button class="btn refresh" id="refreshBtn">🔄 Opdater nu</button>
+    <span id="updated" class="meta">Henter live-kurser...</span>
+    <button class="btn refresh" id="refreshBtn">Opdater nu</button>
   </div>
 </header>
 
 <div class="container">
 
   <div class="row">
-    <div class="card"><h3>Total investeret (DKK)</h3><div class="v" id="kpiInvested">–</div></div>
-    <div class="card"><h3>Aktuel værdi (DKK)</h3><div class="v" id="kpiValue">–</div></div>
-    <div class="card"><h3>Afkast (DKK)</h3><div class="v" id="kpiReturn">–</div></div>
-    <div class="card"><h3>Afkast %</h3><div class="v" id="kpiReturnPct">–</div></div>
-    <div class="card"><h3>Heraf valutaeffekt (DKK)</h3><div class="v" id="kpiFx">–</div></div>
-    <div class="card"><h3>Udbytte modtaget (DKK)</h3><div class="v" id="kpiDiv">–</div></div>
+    <div class="card"><h3>Total investeret (DKK)</h3><div class="v" id="kpiInvested">-</div></div>
+    <div class="card"><h3>Aktuel vaerdi (DKK)</h3><div class="v" id="kpiValue">-</div></div>
+    <div class="card"><h3>Afkast (DKK)</h3><div class="v" id="kpiReturn">-</div></div>
+    <div class="card"><h3>Afkast %</h3><div class="v" id="kpiReturnPct">-</div></div>
+    <div class="card"><h3>Heraf valutaeffekt (DKK)</h3><div class="v" id="kpiFx">-</div></div>
+    <div class="card"><h3>Udbytte modtaget (DKK)</h3><div class="v" id="kpiDiv">-</div></div>
   </div>
 
   <div class="filters" style="margin-top:14px">
@@ -86,16 +83,15 @@ small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;
     <button class="btn" data-investor="Charlotte/Claus">Charlotte/Claus</button>
     <button class="btn" data-investor="Selma">Selma</button>
     <button class="btn" data-investor="Andrea">Andrea</button>
-    <span class="right muted">Status: <span id="liveStatus" class="pill warn">henter…</span></span>
+    <span class="right muted">Status: <span id="liveStatus" class="pill warn">henter...</span></span>
   </div>
 
   <div class="tabs">
-    <div class="tab active" data-tab="overview">Porteføljeoversigt</div>
-    <div class="tab" data-tab="positions">Værdipapirer</div>
+    <div class="tab active" data-tab="overview">Portefoljeoversigt</div>
+    <div class="tab" data-tab="positions">Vaerdipapirer</div>
     <div class="tab" data-tab="sold">Solgte</div>
     <div class="tab" data-tab="returns">Historisk afkast</div>
     <div class="tab" data-tab="fx">Valutakurser</div>
-    <div class="tab" data-tab="lookthrough">Look-through</div>
   </div>
 
   <section id="tab-overview" class="active">
@@ -104,17 +100,17 @@ small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;
       <th data-key="investor">Investor</th>
       <th data-key="positions">#Positioner</th>
       <th data-key="invested">Investeret (DKK)</th>
-      <th data-key="value">Værdi (DKK)</th>
+      <th data-key="value">Vaerdi (DKK)</th>
       <th data-key="return">Afkast (DKK)</th>
       <th data-key="returnPct">Afkast %</th>
       <th data-key="fxEffect">Valutaeffekt (DKK)</th>
       <th data-key="dividend">Udbytte (DKK)</th>
     </tr></thead><tbody></tbody></table>
-    <div class="legend">Afkastet er dekomponeret i kursafkast (lokalvaluta) og valutaeffekt (ændring i valutakurs siden køb).</div>
+    <div class="legend">Afkastet er dekomponeret i kursafkast (lokalvaluta) og valutaeffekt (aendring i valutakurs siden koeb).</div>
   </section>
 
   <section id="tab-positions">
-    <div class="section-title">Aktive værdipapirer</div>
+    <div class="section-title">Aktive vaerdipapirer</div>
     <table id="tblPositions"><thead><tr>
       <th data-key="investor">Investor</th>
       <th data-key="name">Navn</th>
@@ -122,17 +118,16 @@ small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;
       <th data-key="yahoo">Ticker</th>
       <th data-key="currency">Valuta</th>
       <th data-key="qty">Antal</th>
-      <th data-key="buy_price">Købskurs</th>
+      <th data-key="buy_price">Koebskurs</th>
       <th data-key="last_price_local">Aktuel kurs</th>
       <th data-key="invested_dkk">Investeret (DKK)</th>
-      <th data-key="value_dkk">Værdi (DKK)</th>
+      <th data-key="value_dkk">Vaerdi (DKK)</th>
       <th data-key="price_return_dkk">Kursgevinst (DKK)</th>
       <th data-key="fx_return_dkk">Valutaeffekt (DKK)</th>
       <th data-key="total_return_dkk">Total (DKK)</th>
       <th data-key="total_return_pct">Total %</th>
       <th data-key="liveSrc">Kilde</th>
     </tr></thead><tbody></tbody></table>
-    <div class="legend">Kursgevinst = ændring i lokalpris × antal omregnet til DKK med oprindelig valutakurs. Valutaeffekt = nuværende værdi i lokalvaluta × (nuværende FX − oprindelig FX).</div>
   </section>
 
   <section id="tab-sold">
@@ -143,10 +138,10 @@ small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;
       <th data-key="isin">ISIN</th>
       <th data-key="currency">Valuta</th>
       <th data-key="qty">Antal</th>
-      <th data-key="buy_price">Købskurs</th>
+      <th data-key="buy_price">Koebskurs</th>
       <th data-key="last_price_local">Salgskurs</th>
       <th data-key="invested_dkk">Investeret (DKK)</th>
-      <th data-key="value_dkk">Salgsværdi (DKK)</th>
+      <th data-key="value_dkk">Salgsvaerdi (DKK)</th>
       <th data-key="return_dkk">Realiseret (DKK)</th>
       <th data-key="return_pct">Realiseret %</th>
       <th data-key="note">Note</th>
@@ -154,47 +149,24 @@ small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;
   </section>
 
   <section id="tab-returns">
-    <div class="section-title">Afkast pr. kalenderår</div>
+    <div class="section-title">Afkast pr. kalenderaar</div>
     <table id="tblYears"><thead><tr>
-      <th data-key="year">År</th>
+      <th data-key="year">Aar</th>
       <th data-key="invested">Investeret primo (DKK)</th>
-      <th data-key="return">Afkast i året (DKK)</th>
+      <th data-key="return">Afkast i aaret (DKK)</th>
       <th data-key="returnPct">Afkast %</th>
     </tr></thead><tbody></tbody></table>
-    <div class="note">Bemærk: Historisk år-til-år-afkast kræver historiske kursdata, som denne lokale fil ikke har adgang til. Tabellen viser i stedet samlet afkast siden køb pr. anskaffelsesår, beregnet ud fra aktuelle live-kurser. År-til-dato (YTD) for indeværende år vises som approximation.</div>
   </section>
 
   <section id="tab-fx">
     <div class="section-title">Aktuelle valutakurser (mod DKK)</div>
     <div class="fx-grid" id="fxGrid"></div>
-    <div class="legend">Kilde: <a style="color:var(--accent)" href="https://www.frankfurter.app/" target="_blank">Frankfurter.app</a> (ECB-referencekurser). Falder tilbage til Yahoo FX hvis utilgængelig.</div>
-  </section>
-
-  <section id="tab-lookthrough">
-    <div class="section-title">Look-through – samlet eksponering pr. underliggende aktie</div>
-    <div class="note">
-      Look-through-data for individuelle iShares-ETF'er kræver download af iShares' offentlige holdings-CSV pr. fond.
-      Disse hostes på <code>www.ishares.com</code>, men hentes IKKE direkte i browseren pga. CORS-restriktioner.
-      Funktionen er forberedt: hvis du henter holdings-CSV'er manuelt og lægger dem i samme mappe som denne fil
-      med navnet <code>holdings_&lt;ISIN&gt;.csv</code>, vil siden indlæse dem automatisk og lave aggregeret look-through.
-      For BIX USA findes ingen offentligt struktureret holdings-feed; data findes på
-      <a style="color:var(--accent)" href="https://bankinvest.dk/alle-produkter/aktier/bix-usa-aktier-indeks-a/" target="_blank">bankinvest.dk</a>.
-    </div>
-    <table id="tblLookthrough"><thead><tr>
-      <th data-key="ticker">Underliggende</th>
-      <th data-key="funds">Antal fonde</th>
-      <th data-key="exposure_dkk">Samlet eksponering (DKK)</th>
-      <th data-key="weight_pct">Andel af samlet portefølje</th>
-    </tr></thead><tbody><tr><td colspan="4" class="muted">Ingen look-through-data indlæst.</td></tr></tbody></table>
+    <div class="legend">Kilde: Frankfurter (ECB), open.er-api eller Stooq som fallback.</div>
   </section>
 
   <div class="note" style="margin-top:18px">
-    <strong>Datakilder & noter</strong><br>
-    • Aktiekurser: Yahoo Finance via <code>query1.finance.yahoo.com/v7/finance/quote</code>.<br>
-    • Valutakurser: Frankfurter.app (ECB), fallback til Yahoo Finance FX.<br>
-    • BIX USA Aktier Indeks A: ticker <code>BXIUSAAIA.CO</code> – hvis Yahoo midlertidigt ikke leverer kurs, vises seneste regnearksværdi med advarsel.<br>
-    • Hvis et papir mangler live-kurs vises advarslen <span class="pill err">manuel</span> ved kilden, og du kan indtaste pris manuelt i Værdipapir-tabellen (felt vises hvor live-data fejler).<br>
-    • Bemærk: Dette dashboard udgør ikke skatterådgivning eller anbefaling.
+    Datakilder: Stooq, Yahoo Finance (via CORS-proxyer) og Frankfurter (ECB).
+    Hvis et papir ikke kan opdateres, vises seneste regnearksvaerdi med advarsel.
   </div>
 </div>
 
@@ -203,73 +175,64 @@ small.code{color:var(--muted);font-family:ui-monospace,Menlo,Consolas,monospace;
 const POSITIONS = [{"investor": "Andrea", "name": "BIX USA", "isin": "DK0061279163", "yahoo": "BXIUSAAIA.CO", "fond_omk_pct": 0.52, "amount_invested_target": 80000, "account": "5592659", "date": "2025-01-16 00:00:00", "qty": 525, "buy_price": 152.5, "currency": "DKK", "buy_value_local": 80062.5, "buy_fx": 1, "invested_dkk": 80062.5, "dividend": 7107.97, "last_price_local": 147.32, "last_value_local": 77343, "last_fx": 1, "last_value_dkk": 77343, "return_dkk": 4388.47, "return_pct": 0.054813052302888375, "note": 258.093591, "status": "Aktiv"}, {"investor": "Selma", "name": "BIX USA", "isin": "DK0061279163", "yahoo": "BXIUSAAIA.CO", "fond_omk_pct": 0.52, "amount_invested_target": 80000, "account": "5592642", "date": "2025-01-16 00:00:00", "qty": 775, "buy_price": 148.19354838709677, "currency": "DKK", "buy_value_local": 114850, "buy_fx": 1, "invested_dkk": 114850, "dividend": 7892.719999999999, "last_price_local": 147.32, "last_value_local": 114173, "last_fx": 1, "last_value_dkk": 114173, "return_dkk": 7215.719999999999, "return_pct": 0.062827340008707, "note": 380.99530100000004, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "BIX USA", "isin": "DK0061279163", "yahoo": "BXIUSAAIA.CO", "fond_omk_pct": 0.52, "amount_invested_target": 1000000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 6600, "buy_price": 152.4942803, "currency": "DKK", "buy_value_local": 1006462.2499800001, "buy_fx": 1, "invested_dkk": 1006462.2499800001, "dividend": 89357.4, "last_price_local": 147.32, "last_value_local": 972312, "last_fx": 1, "last_value_dkk": 972312, "return_dkk": 55207.150019999914, "return_pct": 0.054852678300747956, "note": 3244.605144, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares MSCI Global Semiconductors UCITS ETF", "isin": "IE000I8KRLL9", "yahoo": "SEMI.MI", "fond_omk_pct": 0.35, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 3680, "buy_price": 7.625, "currency": "USD", "buy_value_local": 28060, "buy_fx": 7.27745, "invested_dkk": 204405.247, "dividend": null, "last_price_local": 18.696, "last_value_local": 68801.28, "last_fx": 6.359, "last_value_dkk": 437507.33952, "return_dkk": 233102.09251999998, "return_pct": 1.14039192213104, "note": 18741.939410357758, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Ageing Population UCITS ETF USD (Acc)", "isin": "IE00BYZK4669", "yahoo": "AGED.L", "fond_omk_pct": 0.4, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 3630, "buy_price": 7.6917, "currency": "USD", "buy_value_local": 27920.871, "buy_fx": 7.27355, "invested_dkk": 203283.85126205, "dividend": null, "last_price_local": 9.8938, "last_value_local": 35914.494, "last_fx": 6.359, "last_value_dkk": 228380.26734599998, "return_dkk": 25096.416083949967, "return_pct": 0.12345504046752132, "note": 3546.7455518833794, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Nikkei 225 UCITS ETF JPY (Acc)", "isin": "IE00B52MJD48", "yahoo": "CNKY.L", "fond_omk_pct": 0.48, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 110, "buy_price": 241.5, "currency": "EUR", "buy_value_local": 26565, "buy_fx": 7.4776826, "invested_dkk": 198844.638269, "dividend": null, "last_price_local": 343.5, "last_value_local": 37785, "last_fx": 7.4723, "last_value_dkk": 282340.8555, "return_dkk": 83496.21723100002, "return_pct": 0.41990680743448106, "note": 7250.2308283845, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Oil & Gas Exploration & Production UCITS ETF USD (Acc)", "isin": "IE00B6R51Z18", "yahoo": "SPOG.L", "fond_omk_pct": 0.55, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 1000, "buy_price": 22.765, "currency": "GBp", "buy_value_local": 22765, "buy_fx": 8.864822910000001, "invested_dkk": 202007.69354615003, "dividend": null, "last_price_local": 25.4, "last_value_local": 25400, "last_fx": 8.6443, "last_value_dkk": 219565.21999999997, "return_dkk": 17557.526453849947, "return_pct": 0.08691513746647878, "note": -9984.069683839998, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P 500 Health Care Sector UCITS ETF USD (Acc)", "isin": "IE00B43HR379", "yahoo": "IUHC.L", "fond_omk_pct": 0.15, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 2500, "buy_price": 11.0371, "currency": "USD", "buy_value_local": 27592.75, "buy_fx": 7.27045, "invested_dkk": 200811.7092375, "dividend": null, "last_price_local": 11.7, "last_value_local": 29250, "last_fx": 6.359, "last_value_dkk": 186000.75, "return_dkk": -14810.959237500007, "return_pct": -0.07375545626168185, "note": 718.14889575, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P 500 Utilities Sector UCITS ETF", "isin": "IE00B4KBBD01", "yahoo": "IUUS.L", "fond_omk_pct": 0.15, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 3030, "buy_price": 9.3023, "currency": "USD", "buy_value_local": 28185.969, "buy_fx": 7.27095, "invested_dkk": 205138.77130055, "dividend": null, "last_price_local": 11.335, "last_value_local": 34345.05, "last_fx": 6.359, "last_value_dkk": 218400.17295, "return_dkk": 13261.40164945001, "return_pct": 0.06464600311961825, "note": -3507.28837740405, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P SmallCap 600 UCITS ETF USD (Dist)", "isin": "IE00B2QWCY14", "yahoo": "IUSM.L", "fond_omk_pct": 0.3, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 290, "buy_price": 77.5585, "currency": "GBp", "buy_value_local": 22491.965, "buy_fx": 8.87333774, "invested_dkk": 199778.8018812591, "dividend": 2122.3599999999997, "last_price_local": 82.77, "last_value_local": 24003.3, "last_fx": 8.6443, "last_value_dkk": 207491.72619, "return_dkk": 9835.284308740884, "return_pct": 0.049230870423312485, "note": 1286.4487023779998, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares US Medical Devices UCITS ETF Acc Class", "isin": "IE00BMX0DF60", "yahoo": "IUMS.L", "fond_omk_pct": 0.25, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 4200, "buy_price": 6.547, "currency": "USD", "buy_value_local": 27497.399999999998, "buy_fx": 7.27095, "invested_dkk": 200132.22053, "dividend": null, "last_price_local": 5.346, "last_value_local": 22453.2, "last_fx": 6.359, "last_value_dkk": 142779.8988, "return_dkk": -57352.321729999996, "return_pct": -0.28657215503888755, "note": -611.6690864591999, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Global Aerospace & Defence UCITS ETF USD (Acc)", "isin": "IE000U9ODG19", "yahoo": "DFNG.L", "fond_omk_pct": 0.35, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 4550, "buy_price": 6.0903, "currency": "EUR", "buy_value_local": 27710.865, "buy_fx": 7.26505, "invested_dkk": 201520.81976825, "dividend": null, "last_price_local": 9.643838040572417, "last_value_local": 43879.4630846045, "last_fx": 7.4723, "last_value_dkk": 327880.51200709015, "return_dkk": 126359.69223884016, "return_pct": 0.6270304596029059, "note": 10004.290182360335, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P 500 ESG UCITS ETF Hedged Euro (Accumulating)", "isin": "IE000CR7DJI8", "yahoo": "SPXE.L", "fond_omk_pct": 0.1, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 3840, "buy_price": 6.992, "currency": "EUR", "buy_value_local": 26849.28, "buy_fx": 7.47748469, "invested_dkk": 200965.08013752318, "dividend": null, "last_price_local": 8.563, "last_value_local": 32881.920000000006, "last_fx": 7.4723, "last_value_dkk": 245703.57081600002, "return_dkk": 44738.49067847684, "return_pct": 0.22261823122634875, "note": 3994.894357897344, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Core S&P 500 UCITS ETF U.S. Dollar (Accumulating)", "isin": "IE00B5BMR087", "yahoo": "CSPX.L", "fond_omk_pct": 0.07, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 150, "buy_price": 743.3739, "currency": "USD", "buy_value_local": 111506.085, "buy_fx": 6.40865, "invested_dkk": 715318.07163525, "dividend": null, "last_price_local": 789.22, "last_value_local": 118383, "last_fx": 6.359, "last_value_dkk": 752797.497, "return_dkk": 37479.42536474997, "return_pct": 0.052395468325119036, "note": 9299.307480441, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P U.S. Banks UCITS ETF U.S. Dollar (Accumulating)", "isin": "IE00BD3V0B10", "yahoo": "BNKS.L", "fond_omk_pct": 0.35, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 13800, "buy_price": 7.994, "currency": "USD", "buy_value_local": 110317.2, "buy_fx": 6.40835, "invested_dkk": 707658.17862, "dividend": null, "last_price_local": 8.054, "last_value_local": 111145.2, "last_fx": 6.359, "last_value_dkk": 706772.3267999999, "return_dkk": -885.8518200000981, "return_pct": -0.0012518075064540234, "note": 13230.777957695998, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares MSCI World Small Cap UCITS ETF U.S. Dollar (Accumulating)", "isin": "IE00BF4RFH31", "yahoo": "WSML.L", "fond_omk_pct": 0.35, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 11775, "buy_price": 9.383, "currency": "USD", "buy_value_local": 110484.82499999998, "buy_fx": 6.40955, "invested_dkk": 708857.87007875, "dividend": null, "last_price_local": 10.24, "last_value_local": 120576, "last_fx": 6.359, "last_value_dkk": 766742.784, "return_dkk": 57884.91392125003, "return_pct": 0.08165940785113855, "note": 13874.21067648, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Edge S&P 500 Minimum Volatility UCITS ETF U.S. Dollar (Accumulating)", "isin": "IE00B6SPMN59", "yahoo": "MVOL.L", "fond_omk_pct": 0.2, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 1000, "buy_price": 109.65, "currency": "USD", "buy_value_local": 109650, "buy_fx": 6.40955, "invested_dkk": 703509.9675000001, "dividend": null, "last_price_local": 110.01, "last_value_local": 110010, "last_fx": 6.359, "last_value_dkk": 699553.59, "return_dkk": -3956.377500000177, "return_pct": -0.005623768934020364, "note": 2040.59782203, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P 500 Financials Sector UCITS ETF U.S. Dollar (Accumulating", "isin": "IE00B4JNQZ49", "yahoo": "IUFS.L", "fond_omk_pct": 0.15, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 6600, "buy_price": 16.58, "currency": "USD", "buy_value_local": 109427.99999999999, "buy_fx": 6.40835, "invested_dkk": 701954.1738, "dividend": null, "last_price_local": 15.345, "last_value_local": 101277, "last_fx": 6.359, "last_value_dkk": 644020.443, "return_dkk": -57933.73080000002, "return_pct": -0.08253206970246812, "note": 5929.496218701, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Edge MSCI World Value Factor UCITS ETF U.S. Dollar (Accumulating)", "isin": "IE00BP3QZB59", "yahoo": "IWVL.L", "fond_omk_pct": 0.25, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 1775, "buy_price": 61.57, "currency": "USD", "buy_value_local": 109286.75, "buy_fx": 6.40985, "invested_dkk": 700511.6744875, "dividend": null, "last_price_local": 73.51, "last_value_local": 130480.25000000001, "last_fx": 6.359, "last_value_dkk": 829723.9097500001, "return_dkk": 129212.23526250012, "return_pct": 0.1844540783093056, "note": 17400.969835277003, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Core MSCI Europe UCITS ETF EUR", "isin": "IE00B4K48X80", "yahoo": "IMEU.L", "fond_omk_pct": 0.12, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 975, "buy_price": 96.02, "currency": "EUR", "buy_value_local": 93619.5, "buy_fx": 7.48812985, "invested_dkk": 701736.002492075, "dividend": null, "last_price_local": 99.76, "last_value_local": 97266, "last_fx": 7.4723, "last_value_dkk": 726800.7318, "return_dkk": 25064.72930792498, "return_pct": 0.035718174953134244, "note": 15856.611565680601, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Edge MSCI Europe Value Factor UCITS ETF Euro (Accumulating)", "isin": "IE00BQN1K901", "yahoo": "IEVL.L", "fond_omk_pct": 0.25, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 7700, "buy_price": 12.128, "currency": "EUR", "buy_value_local": 93385.6, "buy_fx": 7.48883103, "invested_dkk": 699348.9790351681, "dividend": null, "last_price_local": 13.182, "last_value_local": 101501.40000000001, "last_fx": 7.4723, "last_value_dkk": 758448.91122, "return_dkk": 59099.93218483194, "return_pct": 0.08450706865457508, "note": 14542.49942373228, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares MSCI Europe Financials Sector UCITS ETF EUR (Acc)", "isin": "IE00BMW42306", "yahoo": "ESIF.L", "fond_omk_pct": 0.18, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 6350, "buy_price": 14.664, "currency": "EUR", "buy_value_local": 93116.4, "buy_fx": 7.48883103, "invested_dkk": 697332.985721892, "dividend": null, "last_price_local": 15.068, "last_value_local": 95681.8, "last_fx": 7.4723, "last_value_dkk": 714963.11414, "return_dkk": 17630.128418107983, "return_pct": 0.025282223527482998, "note": 21404.56571112332, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P 500 Equal Weight UCITS ETF Hedged Euro (Accumulating)", "isin": "IE000DVLBQ03", "yahoo": "SPEH.L", "fond_omk_pct": 0.17, "amount_invested_target": 700000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 16000, "buy_price": 5.7318, "currency": "EUR", "buy_value_local": 91708.8, "buy_fx": 7.48974827, "invested_dkk": 687562.706143776, "dividend": null, "last_price_local": 5.929, "last_value_local": 94864, "last_fx": 7.4723, "last_value_dkk": 708852.2672, "return_dkk": 21289.561056224047, "return_pct": 0.030963810087413605, "note": 6393.8474501440005, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Ageing Population UCITS ETF USD (Acc)", "isin": "IE00BYZK4669", "yahoo": "AGED.L", "fond_omk_pct": 0.4, "amount_invested_target": 350000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 5620, "buy_price": 9.8225, "currency": "USD", "buy_value_local": 55202.45, "buy_fx": 6.41025, "invested_dkk": 353861.50511249993, "dividend": null, "last_price_local": 9.8938, "last_value_local": 55603.156, "last_fx": 6.359, "last_value_dkk": 353580.469004, "return_dkk": -281.03610849991674, "return_pct": -0.0007941980250453338, "note": 5491.104683632119, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares Global Aerospace & Defence UCITS ETF USD (Acc)", "isin": "IE000U9ODG19", "yahoo": "DFNG.L", "fond_omk_pct": 0.35, "amount_invested_target": 350000, "account": "3444323", "date": "2026-01-07 00:00:00", "qty": 5600, "buy_price": 9.7957, "currency": "EUR", "buy_value_local": 54855.92, "buy_fx": 6.40985, "invested_dkk": 351618.21881199995, "dividend": null, "last_price_local": 9.643838040572417, "last_value_local": 54005.493027205535, "last_fx": 7.4723, "last_value_dkk": 403545.2455471879, "return_dkk": 51927.026735187974, "return_pct": 0.14768013702655108, "note": 12312.972532135798, "status": "Aktiv"}, {"investor": "CLH2328", "name": "iShares S&P U.S. Banks UCITS ETF U.S. Dollar (Accumulating)", "isin": "IE00BD3V0B10", "yahoo": "BNKS.L", "fond_omk_pct": 0.35, "amount_invested_target": 500000, "account": "3835439", "date": "2026-01-07 00:00:00", "qty": 10000, "buy_price": 7.992, "currency": "USD", "buy_value_local": 79920, "buy_fx": 6.40595, "invested_dkk": 512475.484, "dividend": null, "last_price_local": 8.054, "last_value_local": 80540, "last_fx": 6.359, "last_value_dkk": 512153.86, "return_dkk": -321.6240000000107, "return_pct": -0.000627589045801088, "note": 9587.5202592, "status": "Aktiv"}, {"investor": "CLH2328", "name": "iShares MSCI Europe Financials Sector UCITS ETF EUR (Acc)", "isin": "IE00BMW42306", "yahoo": "ESIF.L", "fond_omk_pct": 0.18, "amount_invested_target": 500000, "account": "3835439", "date": "2026-01-07 00:00:00", "qty": 4500, "buy_price": 14.658, "currency": "EUR", "buy_value_local": 65961, "buy_fx": 7.48986521, "invested_dkk": 494533.03911680996, "dividend": null, "last_price_local": 15.068, "last_value_local": 67806, "last_fx": 7.4723, "last_value_dkk": 506666.77379999997, "return_dkk": 12133.734683190007, "return_pct": 0.024535741241595767, "note": 15168.5898740244, "status": "Aktiv"}, {"investor": "CLH2328", "name": "iShares Core MSCI Europe UCITS ETF EUR", "isin": "IE00B4K48X80", "yahoo": "IMEU.L", "fond_omk_pct": 0.12, "amount_invested_target": 500000, "account": "3835439", "date": "2026-01-07 00:00:00", "qty": 700, "buy_price": 95.955, "currency": "EUR", "buy_value_local": 67168.5, "buy_fx": 7.48939743, "invested_dkk": 503554.641276955, "dividend": null, "last_price_local": 99.76, "last_value_local": 69832, "last_fx": 7.4723, "last_value_dkk": 521805.65359999996, "return_dkk": 18251.01232304494, "return_pct": 0.03624435329751411, "note": 11384.2339445912, "status": "Aktiv"}, {"investor": "CLH2328", "name": "iShares Ageing Population UCITS ETF USD (Acc)", "isin": "IE00BYZK4669", "yahoo": "AGED.L", "fond_omk_pct": 0.4, "amount_invested_target": 500000, "account": "3835439", "date": "2026-01-07 00:00:00", "qty": 7850, "buy_price": 9.8175, "currency": "USD", "buy_value_local": 77067.375, "buy_fx": 6.40505, "invested_dkk": 494114.01024375, "dividend": null, "last_price_local": 9.8938, "last_value_local": 77666.33, "last_fx": 6.359, "last_value_dkk": 493880.19247, "return_dkk": -233.81777374999365, "return_pct": -0.0004732061202527928, "note": 7669.9593890590995, "status": "Aktiv"}, {"investor": "Charlotte/Claus", "name": "iShares S&P 500 Information Technology Sector UCITS ETF USD (Acc)", "isin": "IE00B3WJKG14", "yahoo": "IUIT.L", "fond_omk_pct": 0.15, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 840, "buy_price": 33.7, "currency": "USD", "buy_value_local": 28308.000000000004, "buy_fx": 7.26995, "invested_dkk": 205997.7446, "dividend": null, "last_price_local": 41.1054166, "last_value_local": 34528.549944, "last_fx": 6.36435, "last_value_dkk": 219751.7768360964, "return_dkk": 13754.032236096391, "return_pct": 0.06676787778819396, "note": "Solgt 19/12-25", "status": "Solgt"}, {"investor": "Charlotte/Claus", "name": "iShares S&P 500 Energy Sector UCITS ETF USD (Acc)", "isin": "IE00B42NKQ00", "yahoo": "IUES.L", "fond_omk_pct": 0.15, "amount_invested_target": 200000, "account": "3444323", "date": "2025-01-16 00:00:00", "qty": 3000, "buy_price": 9.3675, "currency": "USD", "buy_value_local": 28102.5, "buy_fx": 7.26955, "invested_dkk": 204492.528875, "dividend": null, "last_price_local": 11.4405, "last_value_local": 34321.5, "last_fx": 6.29745, "last_value_dkk": 216137.93017500002, "return_dkk": 11645.401300000027, "return_pct": 0.05694780813786358, "note": "Solgt 17/2-26", "status": "Solgt"}];
 const ISIN_TO_YAHOO = {"DK0061279163": "BXIUSAAIA.CO", "IE00B5BMR087": "CSPX.L", "IE00BF4RFH31": "WSML.L", "IE00B4K48X80": "IMEU.L", "IE00B43HR379": "IUHC.L", "IE00B4KBBD01": "IUUS.L", "IE00B3WJKG14": "IUIT.L", "IE00B42NKQ00": "IUES.L", "IE00B4JNQZ49": "IUFS.L", "IE00BD3V0B10": "BNKS.L", "IE00B6R51Z18": "SPOG.L", "IE000U9ODG19": "DFNG.L", "IE00BYZK4669": "AGED.L", "IE000I8KRLL9": "SEMI.MI", "IE00B52MJD48": "CNKY.L", "IE00BMX0DF60": "IUMS.L", "IE00B6SPMN59": "MVOL.L", "IE00BP3QZB59": "IWVL.L", "IE00BQN1K901": "IEVL.L", "IE00B2QWCY14": "IUSM.L", "IE000DVLBQ03": "SPEH.L", "IE000CR7DJI8": "SPXE.L", "IE00BMW42306": "ESIF.L"};
 const SHEET_FX_FALLBACK = {USD: 6.359, EUR: 7.4723, GBP: 8.6443, GBp: 0.086443, DKK: 1};
-let liveQuotes = {};
-let liveFX = {};
-let activeInvestors = new Set(['ALL']);
-let manualPrices = {};
-let lastSourcesUsed = new Set();
+var liveQuotes = {};
+var liveFX = {};
+var activeInvestors = new Set(["ALL"]);
+var manualPrices = {};
+var lastSourcesUsed = new Set();
 
-const fmtDKK = v => (v==null||isNaN(v))?'–':v.toLocaleString('da-DK',{maximumFractionDigits:0})+' kr';
-const fmtNum = (v,d=2) => (v==null||isNaN(v))?'–':v.toLocaleString('da-DK',{minimumFractionDigits:d,maximumFractionDigits:d});
-const fmtPct = v => (v==null||isNaN(v))?'–':(v*100).toLocaleString('da-DK',{minimumFractionDigits:2,maximumFractionDigits:2})+' %';
-const cls = v => (v==null||v===0)?'':(v>0?'pos':'neg');
+function fmtDKK(v){ if(v==null||isNaN(v)) return "-"; return v.toLocaleString("da-DK",{maximumFractionDigits:0})+" kr"; }
+function fmtNum(v,d){ if(d==null) d=2; if(v==null||isNaN(v)) return "-"; return v.toLocaleString("da-DK",{minimumFractionDigits:d,maximumFractionDigits:d}); }
+function fmtPct(v){ if(v==null||isNaN(v)) return "-"; return (v*100).toLocaleString("da-DK",{minimumFractionDigits:2,maximumFractionDigits:2})+" %"; }
+function cls(v){ if(v==null||v===0) return ""; return v>0?"pos":"neg"; }
 
-function applyFilter(p){
-  if(activeInvestors.has('ALL')) return true;
-  return activeInvestors.has(p.investor);
-}
+function applyFilter(p){ if(activeInvestors.has("ALL")) return true; return activeInvestors.has(p.investor); }
 
 function computeRow(p){
-  const ticker = p.yahoo;
-  const live = liveQuotes[ticker];
-  let priceLocal = live ? live.price : (manualPrices[ticker] != null ? manualPrices[ticker] : p.last_price_local);
-  let liveSrc = live ? '<span class="pill ok">live ('+live.source+')</span>' : '<span class="pill warn">regneark</span>';
+  var ticker = p.yahoo;
+  var live = liveQuotes[ticker];
+  var priceLocal = live ? live.price : (manualPrices[ticker] != null ? manualPrices[ticker] : p.last_price_local);
+  var liveSrc = live ? ('<span class="pill ok">live ('+live.source+')</span>') : '<span class="pill warn">regneark</span>';
   if(!live && manualPrices[ticker]!=null) liveSrc = '<span class="pill ok">manuel</span>';
   if(!ticker) liveSrc = '<span class="pill err">ingen ticker</span>';
-  let priceCcy = p.currency;
-  let fxNow;
-  if(priceCcy==='DKK') fxNow = 1;
-  else if(priceCcy==='GBp') fxNow = (liveFX['GBP'] != null ? liveFX['GBP'] : SHEET_FX_FALLBACK['GBP'])/100;
+  var priceCcy = p.currency;
+  var fxNow;
+  if(priceCcy==="DKK") fxNow = 1;
+  else if(priceCcy==="GBp") fxNow = (liveFX["GBP"] != null ? liveFX["GBP"] : SHEET_FX_FALLBACK["GBP"])/100;
   else fxNow = liveFX[priceCcy] != null ? liveFX[priceCcy] : (SHEET_FX_FALLBACK[priceCcy] != null ? SHEET_FX_FALLBACK[priceCcy] : 1);
-  const fxBuy = p.buy_fx != null ? p.buy_fx : 1;
-  const qty = p.qty || 0;
-  const buyPrice = p.buy_price || 0;
-  const valueLocal = priceLocal * qty;
-  const valueDKK = valueLocal * fxNow;
-  const investedDKK = p.invested_dkk != null ? p.invested_dkk : (buyPrice*qty*fxBuy);
-  const priceReturnLocal = (priceLocal - buyPrice) * qty;
-  const priceReturnDKK = priceReturnLocal * fxBuy;
-  const fxReturnDKK = valueLocal * (fxNow - fxBuy);
-  const totalReturnDKK = valueDKK - investedDKK;
-  const totalReturnPct = investedDKK ? totalReturnDKK/investedDKK : null;
+  var fxBuy = p.buy_fx != null ? p.buy_fx : 1;
+  var qty = p.qty || 0;
+  var buyPrice = p.buy_price || 0;
+  var valueLocal = priceLocal * qty;
+  var valueDKK = valueLocal * fxNow;
+  var investedDKK = p.invested_dkk != null ? p.invested_dkk : (buyPrice*qty*fxBuy);
+  var priceReturnLocal = (priceLocal - buyPrice) * qty;
+  var priceReturnDKK = priceReturnLocal * fxBuy;
+  var fxReturnDKK = valueLocal * (fxNow - fxBuy);
+  var totalReturnDKK = valueDKK - investedDKK;
+  var totalReturnPct = investedDKK ? totalReturnDKK/investedDKK : null;
   return Object.assign({}, p, {
-    price_local: priceLocal,
-    value_local: valueLocal,
-    value_dkk: valueDKK,
-    fx_now: fxNow,
-    price_return_dkk: priceReturnDKK,
-    fx_return_dkk: fxReturnDKK,
-    total_return_dkk: totalReturnDKK,
-    total_return_pct: totalReturnPct,
-    liveSrc: liveSrc
+    price_local: priceLocal, value_local: valueLocal, value_dkk: valueDKK, fx_now: fxNow,
+    price_return_dkk: priceReturnDKK, fx_return_dkk: fxReturnDKK,
+    total_return_dkk: totalReturnDKK, total_return_pct: totalReturnPct, liveSrc: liveSrc
   });
 }
 
 function renderKPIs(rows){
-  let inv=0,val=0,ret=0,fx=0,div=0;
-  rows.filter(function(r){return r.status==='Aktiv';}).forEach(function(r){
+  var inv=0,val=0,ret=0,fx=0,div=0;
+  rows.filter(function(r){return r.status==="Aktiv";}).forEach(function(r){
     inv += r.invested_dkk||0; val += r.value_dkk||0; ret += r.total_return_dkk||0;
     fx  += r.fx_return_dkk||0; div += r.dividend||0;
   });
-  rows.filter(function(r){return r.status==='Solgt';}).forEach(function(r){
+  rows.filter(function(r){return r.status==="Solgt";}).forEach(function(r){
     inv += r.invested_dkk||0; val += r.last_value_dkk||0; ret += r.return_dkk||0; div += r.dividend||0;
   });
-  document.getElementById('kpiInvested').textContent = fmtDKK(inv);
-  document.getElementById('kpiValue').textContent = fmtDKK(val);
-  var rEl=document.getElementById('kpiReturn'); rEl.textContent=fmtDKK(ret); rEl.className='v '+cls(ret);
-  var pEl=document.getElementById('kpiReturnPct'); pEl.textContent=inv?fmtPct(ret/inv):'–'; pEl.className='v '+cls(ret);
-  var fEl=document.getElementById('kpiFx'); fEl.textContent=fmtDKK(fx); fEl.className='v '+cls(fx);
-  document.getElementById('kpiDiv').textContent = fmtDKK(div);
+  document.getElementById("kpiInvested").textContent = fmtDKK(inv);
+  document.getElementById("kpiValue").textContent = fmtDKK(val);
+  var rEl=document.getElementById("kpiReturn"); rEl.textContent=fmtDKK(ret); rEl.className="v "+cls(ret);
+  var pEl=document.getElementById("kpiReturnPct"); pEl.textContent=inv?fmtPct(ret/inv):"-"; pEl.className="v "+cls(ret);
+  var fEl=document.getElementById("kpiFx"); fEl.textContent=fmtDKK(fx); fEl.className="v "+cls(fx);
+  document.getElementById("kpiDiv").textContent = fmtDKK(div);
 }
 
 function renderInvestorTable(rows){
@@ -279,7 +242,7 @@ function renderInvestorTable(rows){
     if(!groups[k]) groups[k]={investor:k,positions:0,invested:0,value:0,return:0,fxEffect:0,dividend:0};
     var g=groups[k];
     g.positions++;
-    if(r.status==='Aktiv'){
+    if(r.status==="Aktiv"){
       g.invested+=r.invested_dkk||0; g.value+=r.value_dkk||0;
       g.return+=r.total_return_dkk||0; g.fxEffect+=r.fx_return_dkk||0;
     } else {
@@ -288,8 +251,7 @@ function renderInvestorTable(rows){
     g.dividend+=r.dividend||0;
   });
   Object.values(groups).forEach(function(g){g.returnPct = g.invested?g.return/g.invested:null;});
-  var arr=Object.values(groups);
-  fillTable('tblInvestors', arr, [
+  fillTable("tblInvestors", Object.values(groups), [
     function(r){return r.investor;},
     function(r){return r.positions;},
     function(r){return fmtDKK(r.invested);},
@@ -302,12 +264,12 @@ function renderInvestorTable(rows){
 }
 
 function renderPositions(rows){
-  var active = rows.filter(function(r){return r.status==='Aktiv';});
-  fillTable('tblPositions', active, [
+  var active = rows.filter(function(r){return r.status==="Aktiv";});
+  fillTable("tblPositions", active, [
     function(r){return r.investor;},
     function(r){return r.name;},
-    function(r){return '<small class="code">'+(r.isin||'')+'</small>';},
-    function(r){return '<small class="code">'+(r.yahoo||'-')+'</small>';},
+    function(r){return '<small class="code">'+(r.isin||"")+'</small>';},
+    function(r){return '<small class="code">'+(r.yahoo||"-")+'</small>';},
     function(r){return r.currency;},
     function(r){return fmtNum(r.qty,0);},
     function(r){return fmtNum(r.buy_price,4);},
@@ -323,11 +285,11 @@ function renderPositions(rows){
 }
 
 function renderSold(rows){
-  var sold = rows.filter(function(r){return r.status==='Solgt';});
-  fillTable('tblSold', sold, [
+  var sold = rows.filter(function(r){return r.status==="Solgt";});
+  fillTable("tblSold", sold, [
     function(r){return r.investor;},
     function(r){return r.name;},
-    function(r){return '<small class="code">'+(r.isin||'')+'</small>';},
+    function(r){return '<small class="code">'+(r.isin||"")+'</small>';},
     function(r){return r.currency;},
     function(r){return fmtNum(r.qty,0);},
     function(r){return fmtNum(r.buy_price,4);},
@@ -336,7 +298,7 @@ function renderSold(rows){
     function(r){return fmtDKK(r.last_value_dkk);},
     function(r){return '<span class="'+cls(r.return_dkk)+'">'+fmtDKK(r.return_dkk)+'</span>';},
     function(r){return '<span class="'+cls(r.return_dkk)+'">'+fmtPct(r.return_pct)+'</span>';},
-    function(r){return r.note||'';}
+    function(r){return r.note||"";}
   ]);
 }
 
@@ -347,11 +309,11 @@ function renderYears(rows){
     var y = new Date(r.date).getFullYear();
     if(!yrs[y]) yrs[y]={year:y,invested:0,return:0};
     yrs[y].invested += r.invested_dkk||0;
-    yrs[y].return += (r.status==='Aktiv'? (r.total_return_dkk||0):(r.return_dkk||0));
+    yrs[y].return += (r.status==="Aktiv"? (r.total_return_dkk||0):(r.return_dkk||0));
   });
   var arr=Object.values(yrs).sort(function(a,b){return a.year-b.year;});
   arr.forEach(function(g){g.returnPct=g.invested?g.return/g.invested:null;});
-  fillTable('tblYears', arr, [
+  fillTable("tblYears", arr, [
     function(r){return r.year;},
     function(r){return fmtDKK(r.invested);},
     function(r){return '<span class="'+cls(r.return)+'">'+fmtDKK(r.return)+'</span>';},
@@ -360,26 +322,26 @@ function renderYears(rows){
 }
 
 function renderFX(){
-  var grid=document.getElementById('fxGrid');
-  var ccys=['USD','EUR','GBP'];
-  grid.innerHTML='';
+  var grid=document.getElementById("fxGrid");
+  var ccys=["USD","EUR","GBP"];
+  grid.innerHTML="";
   ccys.forEach(function(c){
     var live = liveFX[c];
     var fb = SHEET_FX_FALLBACK[c];
-    var el=document.createElement('div'); el.className='fx-tile';
-    el.innerHTML = '<div class="pair">1 '+c+' → DKK</div><div class="val">'+(live?fmtNum(live,4):fmtNum(fb,4))+' '+(live?'<span class="pill ok">live</span>':'<span class="pill warn">fallback</span>')+'</div>';
+    var el=document.createElement("div"); el.className="fx-tile";
+    el.innerHTML = '<div class="pair">1 '+c+' &rarr; DKK</div><div class="val">'+(live?fmtNum(live,4):fmtNum(fb,4))+' '+(live?'<span class="pill ok">live</span>':'<span class="pill warn">fallback</span>')+'</div>';
     grid.appendChild(el);
   });
-  var dkk=document.createElement('div'); dkk.className='fx-tile';
-  dkk.innerHTML='<div class="pair">1 DKK → DKK</div><div class="val">1,0000 <span class="pill ok">basis</span></div>';
+  var dkk=document.createElement("div"); dkk.className="fx-tile";
+  dkk.innerHTML='<div class="pair">1 DKK &rarr; DKK</div><div class="val">1,0000 <span class="pill ok">basis</span></div>';
   grid.appendChild(dkk);
 }
 
 var tableState={};
 function fillTable(tableId, data, cellFns){
   var tbl=document.getElementById(tableId);
-  var tbody=tbl.querySelector('tbody');
-  var headers=Array.from(tbl.querySelectorAll('th'));
+  var tbody=tbl.querySelector("tbody");
+  var headers=Array.from(tbl.querySelectorAll("th"));
   var keys=headers.map(function(h){return h.dataset.key;});
   if(!tableState[tableId]) tableState[tableId]={key:null,dir:1,data:[],cellFns:cellFns};
   tableState[tableId].data=data;
@@ -390,14 +352,15 @@ function fillTable(tableId, data, cellFns){
       var av=a[st.key], bv=b[st.key];
       if(av==null) return 1;
       if(bv==null) return -1;
-      if(typeof av==='number' && typeof bv==='number') return (av-bv)*st.dir;
-      return String(av).localeCompare(String(bv),'da')*st.dir;
+      if(typeof av==="number" && typeof bv==="number") return (av-bv)*st.dir;
+      return String(av).localeCompare(String(bv),"da")*st.dir;
     });
   }
-  tbody.innerHTML=data.map(function(r){return '<tr>'+cellFns.map(function(fn){return '<td>'+fn(r)+'</td>';}).join('')+'</tr>';}).join('') || '<tr><td colspan="'+cellFns.length+'" class="muted">Ingen data</td></tr>';
+  var rowsHtml = data.map(function(r){return "<tr>"+cellFns.map(function(fn){return "<td>"+fn(r)+"</td>";}).join("")+"</tr>";}).join("");
+  tbody.innerHTML = rowsHtml || ('<tr><td colspan="'+cellFns.length+'" class="muted">Ingen data</td></tr>');
   headers.forEach(function(h,i){
-    h.classList.remove('sort-asc','sort-desc');
-    if(keys[i]===st.key) h.classList.add(st.dir===1?'sort-asc':'sort-desc');
+    h.classList.remove("sort-asc","sort-desc");
+    if(keys[i]===st.key) h.classList.add(st.dir===1?"sort-asc":"sort-desc");
     h.onclick=function(){
       if(st.key===keys[i]) st.dir=-st.dir; else { st.key=keys[i]; st.dir=1; }
       fillTable(tableId, st.data, st.cellFns);
@@ -405,55 +368,53 @@ function fillTable(tableId, data, cellFns){
   });
 }
 
-// ====== ROBUST PRICE FETCHING ======
 function fetchWithTimeout(url, ms){
-  ms = ms || 9000;
+  if(ms==null) ms=9000;
   var ctl = new AbortController();
   var id = setTimeout(function(){ctl.abort();}, ms);
-  return fetch(url,{cache:'no-store', signal:ctl.signal}).then(function(r){clearTimeout(id);return r;}).catch(function(e){clearTimeout(id);throw e;});
+  return fetch(url,{cache:"no-store", signal:ctl.signal}).then(function(r){clearTimeout(id);return r;}).catch(function(e){clearTimeout(id);throw e;});
 }
 
 function stooqSymbol(yahoo){
   var sym = yahoo.toLowerCase();
-  if(sym.endsWith('.l')) return sym.replace('.l','.uk');
-  if(sym.endsWith('.co')) return sym.replace('.co','.dk');
-  if(sym.endsWith('.mi')) return sym.replace('.mi','.it');
+  if(sym.indexOf(".l")===sym.length-2) return sym.substring(0,sym.length-2)+".uk";
+  if(sym.indexOf(".co")===sym.length-3) return sym.substring(0,sym.length-3)+".dk";
+  if(sym.indexOf(".mi")===sym.length-3) return sym.substring(0,sym.length-3)+".it";
   return sym;
 }
 
 async function fetchStooq(yahoo){
   var sym = stooqSymbol(yahoo);
-  var url = 'https://stooq.com/q/l/?s='+encodeURIComponent(sym)+'&f=sd2t2ohlcv&h&e=csv';
-  // direct
+  var url = "https://stooq.com/q/l/?s="+encodeURIComponent(sym)+"&f=sd2t2ohlcv&h&e=csv";
   var attempts = [
     url,
-    'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
-    'https://corsproxy.io/?'+encodeURIComponent(url),
-    'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url)
+    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+    "https://corsproxy.io/?"+encodeURIComponent(url),
+    "https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url)
   ];
   for(var i=0;i<attempts.length;i++){
     try{
       var r = await fetchWithTimeout(attempts[i]);
       if(!r.ok) continue;
       var txt = await r.text();
-      var lines = txt.trim().split('\n');
+      var lines = txt.trim().split(String.fromCharCode(10));
       if(lines.length<2) continue;
-      var header=lines[0].split(',');
-      var row=lines[1].split(',');
-      var ci=header.indexOf('Close');
+      var header=lines[0].split(",");
+      var row=lines[1].split(",");
+      var ci=header.indexOf("Close");
       var price=parseFloat(row[ci]);
-      if(!isNaN(price) && price>0) return {price:price, source:'Stooq', symbol:sym};
+      if(!isNaN(price) && price>0) return {price:price, source:"Stooq", symbol:sym};
     }catch(e){}
   }
   return null;
 }
 
 async function fetchYahooMulti(yahoo){
-  var url='https://query1.finance.yahoo.com/v7/finance/quote?symbols='+encodeURIComponent(yahoo);
+  var url="https://query1.finance.yahoo.com/v7/finance/quote?symbols="+encodeURIComponent(yahoo);
   var eps=[
-    'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
-    'https://corsproxy.io/?'+encodeURIComponent(url),
-    'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url)
+    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+    "https://corsproxy.io/?"+encodeURIComponent(url),
+    "https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url)
   ];
   for(var i=0;i<eps.length;i++){
     try{
@@ -461,18 +422,18 @@ async function fetchYahooMulti(yahoo){
       if(!r.ok) continue;
       var j=await r.json();
       var q = j && j.quoteResponse && j.quoteResponse.result && j.quoteResponse.result[0];
-      if(q && q.regularMarketPrice!=null) return {price:q.regularMarketPrice, currency:q.currency, source:'Yahoo'};
+      if(q && q.regularMarketPrice!=null) return {price:q.regularMarketPrice, currency:q.currency, source:"Yahoo"};
     }catch(e){}
   }
   return null;
 }
 
 async function fetchYahooChart(yahoo){
-  var url='https://query1.finance.yahoo.com/v8/finance/chart/'+encodeURIComponent(yahoo)+'?interval=1d&range=5d';
+  var url="https://query1.finance.yahoo.com/v8/finance/chart/"+encodeURIComponent(yahoo)+"?interval=1d&range=5d";
   var eps=[
-    'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
-    'https://corsproxy.io/?'+encodeURIComponent(url),
-    'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(url)
+    "https://api.allorigins.win/raw?url="+encodeURIComponent(url),
+    "https://corsproxy.io/?"+encodeURIComponent(url),
+    "https://api.codetabs.com/v1/proxy?quest="+encodeURIComponent(url)
   ];
   for(var i=0;i<eps.length;i++){
     try{
@@ -481,7 +442,7 @@ async function fetchYahooChart(yahoo){
       var j=await r.json();
       var res = j && j.chart && j.chart.result && j.chart.result[0];
       var price = res && res.meta && res.meta.regularMarketPrice;
-      if(price!=null) return {price:price, currency:res.meta.currency, source:'YahooChart'};
+      if(price!=null) return {price:price, currency:res.meta.currency, source:"YahooChart"};
     }catch(e){}
   }
   return null;
@@ -489,11 +450,11 @@ async function fetchYahooChart(yahoo){
 
 async function fetchOnePrice(yahoo){
   var r = await fetchStooq(yahoo);
-  if(r){ lastSourcesUsed.add('Stooq'); return r; }
+  if(r){ lastSourcesUsed.add("Stooq"); return r; }
   r = await fetchYahooMulti(yahoo);
-  if(r){ lastSourcesUsed.add('Yahoo'); return r; }
+  if(r){ lastSourcesUsed.add("Yahoo"); return r; }
   r = await fetchYahooChart(yahoo);
-  if(r){ lastSourcesUsed.add('YahooChart'); return r; }
+  if(r){ lastSourcesUsed.add("YahooChart"); return r; }
   return null;
 }
 
@@ -503,10 +464,7 @@ async function fetchAllQuotes(tickers){
   async function worker(){
     while(queue.length){
       var t = queue.shift();
-      try{
-        var r = await fetchOnePrice(t);
-        if(r) out[t]=r;
-      }catch(e){}
+      try{ var r = await fetchOnePrice(t); if(r) out[t]=r; }catch(e){}
     }
   }
   await Promise.all([worker(),worker(),worker(),worker()]);
@@ -514,76 +472,68 @@ async function fetchAllQuotes(tickers){
 }
 
 async function fetchFX(){
-  // 1) Frankfurter
   try{
-    var r = await fetchWithTimeout('https://api.frankfurter.app/latest?from=DKK&to=USD,EUR,GBP');
+    var r = await fetchWithTimeout("https://api.frankfurter.app/latest?from=DKK&to=USD,EUR,GBP");
     if(r.ok){
       var j = await r.json();
       var out={};
       Object.keys(j.rates).forEach(function(k){ out[k]=1/j.rates[k]; });
-      if(Object.keys(out).length){ lastSourcesUsed.add('Frankfurter'); return out; }
+      if(Object.keys(out).length){ lastSourcesUsed.add("Frankfurter"); return out; }
     }
   }catch(e){}
-  // 2) open.er-api
   try{
-    var r2 = await fetchWithTimeout('https://open.er-api.com/v6/latest/DKK');
+    var r2 = await fetchWithTimeout("https://open.er-api.com/v6/latest/DKK");
     if(r2.ok){
       var j2 = await r2.json();
       var out2={};
-      ['USD','EUR','GBP'].forEach(function(c){ if(j2.rates && j2.rates[c]) out2[c]=1/j2.rates[c]; });
-      if(Object.keys(out2).length){ lastSourcesUsed.add('open.er-api'); return out2; }
+      ["USD","EUR","GBP"].forEach(function(c){ if(j2.rates && j2.rates[c]) out2[c]=1/j2.rates[c]; });
+      if(Object.keys(out2).length){ lastSourcesUsed.add("open.er-api"); return out2; }
     }
   }catch(e){}
-  // 3) Stooq fx
   try{
-    var pairs=[['USD','usddkk'],['EUR','eurdkk'],['GBP','gbpdkk']];
+    var pairs=[["USD","usddkk"],["EUR","eurdkk"],["GBP","gbpdkk"]];
     var out3={};
     for(var i=0;i<pairs.length;i++){
-      var url='https://stooq.com/q/l/?s='+pairs[i][1]+'&f=sd2t2ohlcv&h&e=csv';
-      var attempts=[
-        url,
-        'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
-        'https://corsproxy.io/?'+encodeURIComponent(url)
-      ];
+      var url="https://stooq.com/q/l/?s="+pairs[i][1]+"&f=sd2t2ohlcv&h&e=csv";
+      var attempts=[ url, "https://api.allorigins.win/raw?url="+encodeURIComponent(url), "https://corsproxy.io/?"+encodeURIComponent(url) ];
       for(var k=0;k<attempts.length;k++){
         try{
           var r3=await fetchWithTimeout(attempts[k]);
           if(!r3.ok) continue;
           var txt=await r3.text();
-          var lines=txt.trim().split('\n');
+          var lines=txt.trim().split(String.fromCharCode(10));
           if(lines.length<2) continue;
-          var header=lines[0].split(',');
-          var row=lines[1].split(',');
-          var ci=header.indexOf('Close');
+          var header=lines[0].split(",");
+          var row=lines[1].split(",");
+          var ci=header.indexOf("Close");
           var price=parseFloat(row[ci]);
           if(!isNaN(price)&&price>0){ out3[pairs[i][0]]=price; break; }
         }catch(e){}
       }
     }
-    if(Object.keys(out3).length){ lastSourcesUsed.add('Stooq-FX'); return out3; }
+    if(Object.keys(out3).length){ lastSourcesUsed.add("Stooq-FX"); return out3; }
   }catch(e){}
   return {};
 }
 
 async function refreshAll(){
   lastSourcesUsed = new Set();
-  document.getElementById('liveStatus').className='pill warn';
-  document.getElementById('liveStatus').textContent='henter…';
-  document.getElementById('updated').textContent='Henter live-kurser…';
+  document.getElementById("liveStatus").className="pill warn";
+  document.getElementById("liveStatus").textContent="henter...";
+  document.getElementById("updated").textContent="Henter live-kurser...";
   var tickers = Array.from(new Set(POSITIONS.map(function(p){return p.yahoo;}).filter(Boolean)));
   var results = await Promise.all([fetchAllQuotes(tickers), fetchFX()]);
   liveQuotes = results[0]; liveFX = results[1];
   var okQ = Object.keys(liveQuotes).length;
   var okFx = Object.keys(liveFX).length;
   var totalT = tickers.length;
-  var pcls='pill err', label='fejl – bruger fallback';
-  if(okQ===totalT && okFx>=3){ pcls='pill ok'; label='live ('+okQ+'/'+totalT+' papirer)'; }
-  else if(okQ>0 || okFx>0){ pcls='pill warn'; label='delvis ('+okQ+'/'+totalT+' papirer, '+okFx+'/3 valutaer)'; }
-  document.getElementById('liveStatus').className=pcls;
-  document.getElementById('liveStatus').textContent=label;
-  var sources = Array.from(lastSourcesUsed).join(', ') || 'fallback';
-  document.getElementById('updated').textContent =
-    'Sidst opdateret: '+new Date().toLocaleString('da-DK')+' • Kilder: '+sources;
+  var pcls="pill err", label="fejl - bruger fallback";
+  if(okQ===totalT && okFx>=3){ pcls="pill ok"; label="live ("+okQ+"/"+totalT+" papirer)"; }
+  else if(okQ>0 || okFx>0){ pcls="pill warn"; label="delvis ("+okQ+"/"+totalT+" papirer, "+okFx+"/3 valutaer)"; }
+  document.getElementById("liveStatus").className=pcls;
+  document.getElementById("liveStatus").textContent=label;
+  var sources = Array.from(lastSourcesUsed).join(", ") || "fallback";
+  document.getElementById("updated").textContent = "Sidst opdateret: "+new Date().toLocaleString("da-DK")+" - Kilder: "+sources;
   renderAll();
 }
 
@@ -597,33 +547,33 @@ function renderAll(){
   renderFX();
 }
 
-document.querySelectorAll('.tab').forEach(function(t){
+document.querySelectorAll(".tab").forEach(function(t){
   t.onclick=function(){
-    document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active');});
-    document.querySelectorAll('section').forEach(function(x){x.classList.remove('active');});
-    t.classList.add('active');
-    document.getElementById('tab-'+t.dataset.tab).classList.add('active');
+    document.querySelectorAll(".tab").forEach(function(x){x.classList.remove("active");});
+    document.querySelectorAll("section").forEach(function(x){x.classList.remove("active");});
+    t.classList.add("active");
+    document.getElementById("tab-"+t.dataset.tab).classList.add("active");
   };
 });
-document.querySelectorAll('.btn[data-investor]').forEach(function(b){
+document.querySelectorAll(".btn[data-investor]").forEach(function(b){
   b.onclick=function(){
     var v=b.dataset.investor;
-    if(v==='ALL'){
-      activeInvestors=new Set(['ALL']);
-      document.querySelectorAll('.btn[data-investor]').forEach(function(x){x.classList.toggle('active', x.dataset.investor==='ALL');});
+    if(v==="ALL"){
+      activeInvestors=new Set(["ALL"]);
+      document.querySelectorAll(".btn[data-investor]").forEach(function(x){x.classList.toggle("active", x.dataset.investor==="ALL");});
     } else {
-      if(activeInvestors.has('ALL')) activeInvestors=new Set();
+      if(activeInvestors.has("ALL")) activeInvestors=new Set();
       if(activeInvestors.has(v)) activeInvestors.delete(v); else activeInvestors.add(v);
-      if(activeInvestors.size===0) activeInvestors=new Set(['ALL']);
-      document.querySelectorAll('.btn[data-investor]').forEach(function(x){
+      if(activeInvestors.size===0) activeInvestors=new Set(["ALL"]);
+      document.querySelectorAll(".btn[data-investor]").forEach(function(x){
         var k=x.dataset.investor;
-        x.classList.toggle('active', activeInvestors.has(k) || (k==='ALL'&&activeInvestors.has('ALL')));
+        x.classList.toggle("active", activeInvestors.has(k) || (k==="ALL"&&activeInvestors.has("ALL")));
       });
     }
     renderAll();
   };
 });
-document.getElementById('refreshBtn').onclick=refreshAll;
+document.getElementById("refreshBtn").onclick=refreshAll;
 setInterval(refreshAll, 5*60*1000);
 refreshAll();
 
